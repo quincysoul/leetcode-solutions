@@ -10,42 +10,42 @@ The problem says there is always one solution - but the edge case handling was n
 // Given an array of integers, return indices of the two numbers such that they add up to a specific target.
 // You may assume that each input would have exactly one solution, and you may not use the same element twice.
 
-//Sample : 
+// Sample :
 // [1,2,3,4,5,0]
 // find 6: should return [0,4]
 // Given an array of integers, return indices of the two numbers such that they add up to a specific target.
 // You may assume that each input would have exactly one solution, and you may not use the same element twice.
 
-//Sample : 
+// Sample :
 // [1,2,3,4,5,0]
 // find 6: should return [0,4]
 function twoSum(numberArray, targetInt) {
+  const sumHashMap = {};
 
-    let sumHashMap = {};
+  let i = 0;
+  const len = numberArray.length;
+  for (i; i < len; i++) {
+    const currentNumInt = numberArray[i];
+    console.log(`currentNumInt::${currentNumInt}`);
 
-    let i = 0;
-    len = numberArray.length;
-    for(i; i < len; i++)
+    const currentNumStr = currentNumInt.toString();
+    const remainderInt = targetInt - currentNumInt;
+    const remainderStr = remainderInt.toString();
+    console.log(`Remainder::${remainderStr}`);
+    console.log(`hasmap at rmstr${sumHashMap[remainderStr]}`);
+    if (sumHashMap[remainderStr] != null)
+    // if hastable has a key == remainder, then I found my two sum.
     {
-        let currentNumInt = numberArray[i];
-        console.log("currentNumInt::" + currentNumInt)
-
-        let currentNumStr = currentNumInt.toString();
-            let remainderInt = targetInt - currentNumInt;
-            let remainderStr = remainderInt.toString();
-            console.log("Remainder::" + remainderStr)
-            console.log("hasmap at rmstr"+sumHashMap[remainderStr])
-            if(sumHashMap[remainderStr] != null) //if hastable has a key == remainder, then I found my two sum.
-            {
-                console.log("hashmap has rmaint::")
-                let otherIndex = sumHashMap[remainderStr]; // indexOfOtherOperand = 
-                return [otherIndex,i];
-            }
-            //else, I need to store my current Number as a hastable key, so others looking for a remainder could find it.
-            sumHashMap[currentNumStr] = i
-            console.log("hashmap Doesnt have rmaint::" + JSON.stringify(sumHashMap));
-
-        
+      console.log('hashmap has rmaint::');
+      const otherIndex = sumHashMap[remainderStr];
+      // indexOfOtherOperand =
+      return [otherIndex, i];
     }
+    // else, I need to store my current Number as a hastable key,
+    // so others looking for a remainder could find it.
+    sumHashMap[currentNumStr] = i;
+    console.log(`hashmap Doesnt have rmaint::${JSON.stringify(sumHashMap)}`);
+  }
 }
-twoSum([2,7,11,15],9);
+
+export { twoSum };
