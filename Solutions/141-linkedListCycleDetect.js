@@ -4,22 +4,18 @@
 //
 //
 
-//First, we define what a node is, and what a Single linked list might look like.
-class ListNode
-{
-    constructor(next,val)
-    {
-        this.next = next;
-        this.val = val;
-    }
+// First, we define what a node is, and what a Single linked list might look like.
+class ListNode {
+  constructor(next, val) {
+    this.next = next;
+    this.val = val;
+  }
 }
-class SingleLinkedList
-{
-    constructor(head,tail)
-    {
-        this.head = head;
-        this.tail = tail;
-    }
+class SingleLinkedList {
+  constructor(head, tail) {
+    this.head = head;
+    this.tail = tail;
+  }
 }
 
 /**
@@ -35,29 +31,24 @@ class SingleLinkedList
  * @return {boolean}
  */
 
-var hasCycle = function(head) {
-    
-    let node = head;
-    let viewedNode = {};
-    let pos = 0;
-    let arrayReturn = [];
+const hasCycle = function (head) {
+  let node = head;
+  const viewedNode = {};
+  let pos = 0;
+  const arrayReturn = [];
 
-    while(node)
-    {
-      if(node.position !=null)
-      {
-         // return arrayReturn,node.position;
-        return true;
-      }
-      else
-      {
-        node.position = pos;  
-        // viewedNode[node.position] = node.val;
-        // arrayReturn.push(node.val);
-
-        node = node.next;
-        pos++;
-      }
+  while (node) {
+    if (node.position != null) {
+      // return arrayReturn,node.position;
+      return true;
     }
+
+    node.position = pos;
+    // viewedNode[node.position] = node.val;
+    // arrayReturn.push(node.val);
+
+    node = node.next;
+    pos++;
+  }
   return false;
 };
