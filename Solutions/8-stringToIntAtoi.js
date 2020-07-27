@@ -33,7 +33,9 @@ function myAtoi(string) {
   let convertedInt = 0;
   let modifiedInt = false;
   let i = 0;
-  if (stringModified == null || stringModified.length === 0) { return 0; }
+  if (stringModified == null || stringModified.length === 0) {
+    return 0;
+  }
   if (stringModified[0] === '-') {
     signInt = -1;
     i = 1;
@@ -48,18 +50,24 @@ function myAtoi(string) {
     if (currentChar === spaceChar && !modifiedInt) {
       // eslint-disable-next-line no-continue
       continue;
-    } else if (acceptedChars[currentChar] != null) {
+    }
+    else if (acceptedChars[currentChar] != null) {
       multiplier = 10;
       convertedInt *= multiplier;
       convertedInt += acceptedChars[currentChar];
       modifiedInt = true;
-    } else {
+    }
+    else {
       break;
     }
   }
   convertedInt *= signInt;
-  if (convertedInt > intMax) { return intMax; }
-  if (convertedInt < intMin) { return intMin; }
+  if (convertedInt > intMax) {
+    return intMax;
+  }
+  if (convertedInt < intMin) {
+    return intMin;
+  }
 
   return convertedInt;
 }
