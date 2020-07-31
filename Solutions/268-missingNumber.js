@@ -20,6 +20,7 @@ function missingNumber(nums) {
 
   for (let i = 0; i < range; i++) {
     if (nums[i] == i) {
+      continue;
     }
     else if (nums[i] === null) {
       nullIndex = i;

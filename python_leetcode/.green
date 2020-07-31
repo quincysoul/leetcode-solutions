@@ -1,0 +1,5 @@
+target = "./solutions/__test__"
+logging = True
+omit-patterns = *__init__*
+run-coverage = true
+verbose = 3
