@@ -6,7 +6,7 @@ import collections
 Time Complexity: O(M*N) 
     (close to N^2)(OPTIMAL)
 Space Complexity: O( min(m,n) ) 
-    (OPTIMAL)
+    (OPTIMAL) - Because a queue is used we can remove garbage from memory.
 
 -----------
 The concept of BFS.
@@ -32,7 +32,7 @@ class Solution:
                 if self.visited.get(f"{position}"):
                     continue
                 elif grid[i][j] == "0":
-                    self.visited[f"{position}"] = True
+                    # self.visited[f"{position}"] = True
                     continue
                 elif grid[i][j] == "1":
                     self.countIslands += 1
@@ -53,7 +53,7 @@ class Solution:
                 if self.visited.get(f"{position}"):
                     continue
                 elif grid[i][j] == "0":
-                    self.visited[f"{position}"] = True
+                    # self.visited[f"{position}"] = True
                     continue
                 elif grid[i][j] == "1":
                     self.visited[f"{position}"] = True
