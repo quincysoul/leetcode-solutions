@@ -1,5 +1,6 @@
 from typing import List
 import math
+import time
 
 """
 Summary:
@@ -35,97 +36,104 @@ Args:
 class Solution:
     def __init__(self):
         self.len_board = 9
-        self.stack = []
-        self.solved = {}
         self.n = 1
         self.n_expected = "Unknown O(N)"
+        self.unsolved = []
 
     # Now we know if any given element is valid, we can look at all the elements
     # and try different values if not valid
     def solveSudoku(self, board: List[List[str]]) -> None:
-        self.len_board = len(board)
-        self.n_expected = (math.factorial(self.len_board)) ** self.len_board
+        self.unsolved = self.find_unsolved(board)
+        print("Board to solve:\n----------------")
+        self.pretty_print(board, 0, 0)
+        # print(f"Unsolved elements: {self.unsolved}")
+        # self.pretty_print_unsolved(board)
 
-        self.solved = self.get_pre_solved(board)
+        i = 0
+        while i < len(self.unsolved):
+            position = self.unsolved[i]
+            # print(f"Attempting to solve position: {position}")
+            # self.pretty_print(board, *position)
 
-        for i in range(self.len_board):
-            for j in range(self.len_board):
-                self.n += 1
-                self.print_n()
-                self.pretty_print(board, i, j)
+            # Increment position element
+            current_value = self.quick_get(board, *position)
+            # Check if position element is valid.
+            print(f"checking if positon is valid: {position}")
+            if self.quick_get(board, *position) == 10:
+                # Current position is invalid, set to 0 and backtrack.
+                print(f"hit unsolveable at position: {position}")
+                self.quick_set(board, *position, 0)
+                i -= 1
+                # Previous position answer only appeared valid until we hit this position.
+                # Increment the previous position and try from there.
+                backtrack_position = self.unsolved[i]
+                backtrack_value = self.quick_get(board, *backtrack_position)
+                self.quick_set(board, *backtrack_position, (backtrack_value + 1))
+            elif self.is_valid(board, *position):
+                # Position is valid, so move forward to the next unsolved item in the list.
+                print("Found valid number,")
+                self.pretty_print(board, *position)
+                i += 1
+                continue
+            else:
+                self.quick_set(board, *position, (current_value + 1))
+                # Remain on position and re-check validity at incremented value.
+            if position[0] == 8 and position[1] == 6:
+                self.pretty_print(board, *position)
+            # print(f"Position was not valid, remaining on position: {position}")
 
-                element = board[i][j]
-
-                if self.solved.get(f"[{i}][{j}]"):
-                    continue
-                elif board[i][j] == "." or board[i][j] == "0":
-                    board[i][j] = "0"
-                    if self.solve(board, i, j) == True:
-                        continue
-        while self.stack:
-            next_position = self.stack.pop()
-            print(f"Changing to solve next_position: {next_position}")
-            if board[next_position[0]][next_position[1]] == "0":
-                self.solve(board, *next_position)
-                self.pretty_print(board, *next_position)
+        # End while (iteration through unsolved elements)
         return board
 
-    def solve(self, board, i, j):
-        while (int(board[i][j])) < 10:
-            board[i][j] = str(((int(board[i][j])) + 1))
-            if board[i][j] == "10":
-                board[i][j] = "0"
-                self.pretty_print(board, i, j)
-                next_position = self.stack.pop()
-                print(f"Changing to solve next_position: {next_position}")
-                self.solve(board, *next_position)
-            if self.is_valid(board, i, j):
-                self.stack.append([i, j])
-                return True
-
     def is_valid(self, board, i, j):
-        element = board[i][j]
+        element = self.quick_get(board, i, j)
 
-        print(f"Comparing element... {element}")
-
-        # Row valid element?
-        for k in range(self.len_board):
-            if board[i][k] == board[i][j] and k != j:
+        # Validate row.
+        for col in range(self.len_board):
+            if col != j and element == self.quick_get(board, i, col):
                 return False
-        # Col valid element?
-        for k in range(self.len_board):
-            if board[k][j] == board[i][j] and k != i:
+        # Validate col.
+        for row in range(self.len_board):
+            if row != i and element == self.quick_get(board, row, j):
                 return False
-        # 3x3 box valid element?
+        # Validate 3x3 box.
         """
+        Get the box coordinates like so.
         [0,0] [0,1] [0,2]
         [1,0] [1,1] [1,2]
         [2,0] [2,1] [2,2]
         """
-        boxI = i // 3
-        boxJ = j // 3
-        startI = boxI * 3
-        startJ = boxJ * 3
-        for k in range(3):
-            for l in range(3):
+        bI = i // 3
+        bJ = j // 3
+        # Take box coordinates, and then get the starting i,j index by multiplying each by 3.
+        sI = bI * 3
+        sJ = bJ * 3
+
+        for h in range(3):
+            for w in range(3):
                 if (
-                    startI + k != i
-                    and startJ + l != j
-                    and board[startI + k][startJ + l] == element
+                    sI + h != i
+                    and sJ + w != j
+                    and self.quick_get(board, sI + h, sJ + w) == element
                 ):
                     return False
+        # No invalid copies of this element were found, so is_valid res True.
         return True
 
-    def get_pre_solved(self, board):
-        solved = {}
+    def quick_set(self, board, i, j, val):
+        board[i][j] = str(val)
+
+    def quick_get(self, board, i, j):
+        return int(board[i][j])
+
+    def find_unsolved(self, board):
+        unsolved = []
         for i in range(self.len_board):
             for j in range(self.len_board):
-                element = board[i][j]
-                if element != ".":
-                    element = board[i][j]
-                    position_str = f"[{i}][{j}]"
-                    solved[position_str] = True
-        return solved
+                if board[i][j] == "." or board[i][j] == " " or board[i][j] == "":
+                    board[i][j] = "0"
+                    unsolved.append([i, j])
+        return unsolved
 
     def print_n(self):
         print(f"O(N): {self.n}/{self.n_expected}")
@@ -135,6 +143,16 @@ class Solution:
             for w in range(self.len_board):
                 if h == i and w == j:
                     print(f"[{board[i][j]}]", end="")
+                else:
+                    print(f" {board[h][w]} ", end="")
+                if w == 8:
+                    print("")
+
+    def pretty_print_unsolved(self, board):
+        for h in range(self.len_board):
+            for w in range(self.len_board):
+                if [h, w] in self.unsolved:
+                    print(f"[{board[h][w]}]", end="")
                 else:
                     print(f" {board[h][w]} ", end="")
                 if w == 8:
