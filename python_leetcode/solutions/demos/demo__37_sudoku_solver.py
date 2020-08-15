@@ -52,8 +52,8 @@ class Solution:
         self.unsolved = self.find_unsolved(board)
         print("Board to solve:\n----------------")
         self.pretty_print(board, 0, 0)
-        # print(f"Unsolved elements: {self.unsolved}")
-        # self.pretty_print_unsolved(board)
+        print(f"Unsolved elements: {self.unsolved}")
+        self.pretty_print_unsolved(board)
 
         i = 0
         while i < len(self.unsolved):
@@ -82,7 +82,7 @@ class Solution:
                 i += 1
             # else:
             # Remain on position i and re-check validity at an incremented value.
-            # self.print_n()
+            self.print_n()
 
         # End while (iteration through unsolved elements)
         print(f"-----------------------------------")
@@ -167,3 +167,22 @@ class Solution:
                     print(f" {board[h][w]} ", end="")
                 if w == 8:
                     print("")
+
+
+print("Initiating solution on worst case scenario and determining O(N) sample.")
+solution = Solution()
+
+solution.solveSudoku(
+    [
+        [".", ".", ".", ".", ".", ".", ".", ".", "."],
+        [".", ".", ".", ".", ".", "3", ".", "8", "5"],
+        [".", ".", "1", ".", "2", ".", ".", ".", "."],
+        [".", ".", ".", "5", ".", "7", ".", ".", "."],
+        [".", ".", "4", ".", ".", ".", "1", ".", "."],
+        [".", "9", ".", ".", ".", ".", ".", ".", "."],
+        ["5", ".", ".", ".", ".", ".", ".", "7", "3"],
+        [".", ".", "2", ".", "1", ".", ".", ".", "."],
+        [".", ".", ".", ".", "4", ".", ".", ".", "9"],
+    ]
+)
+
