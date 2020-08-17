@@ -11,7 +11,8 @@
         "**/__pycache__": true,
         "**/.pytest_cache": true,
         "**/Pipfile.lock": true,
-        "**/package-lock.json": true
+        "**/package-lock.json": true,
+        "**/.coverage.*": true
     },
     "python.formatting.provider": "black",
     "pythonTestExplorer.testFramework": "pytest",
