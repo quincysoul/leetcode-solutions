@@ -87,8 +87,8 @@ class Solution:
         # End while (iteration through unsolved elements)
         print(f"-----------------------------------")
         print(f"TOTAL O(N) for board / (worst case)")
-        self.print_n()
-        self.pretty_print(board, i, j)
+        self.print_n(),
+        self.pretty_print(board, 8, 8)
         print(f"-----------------------------------")
         return board
 

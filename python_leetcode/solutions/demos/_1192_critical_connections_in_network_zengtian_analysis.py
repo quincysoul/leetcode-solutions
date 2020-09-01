@@ -1,3 +1,6 @@
+from typing import List
+import collections
+
 """
 Summary:
     Demo using zengtian006's code, displays the ranking system.
@@ -27,13 +30,16 @@ class Solution:
         self.res = []
         self.dfs(0, None, idx, visited)
 
-        # print(self.low)
+        print("Final res=========")
+        print(self.low)
         # print(self.ids)
+        print(self.res)
         return self.res
 
     def dfs(self, cur, par, idx, visited):
         visited[cur] = 1
         self.visit_time[cur] = self.low[cur] = idx
+        print(f"dfs({cur},{par},{idx})")
         for nxt in self.dic[cur]:
             if nxt == par:
                 continue
@@ -43,4 +49,9 @@ class Solution:
                 if self.low[nxt] > self.visit_time[cur]:
                     self.res.append([cur, nxt])
             elif visited[nxt]:
+                print(f"{nxt} was visited")
                 self.low[cur] = min(self.low[cur], self.low[nxt])
+
+
+solution = Solution()
+solution.criticalConnections(4, [[0, 1], [1, 2], [2, 0], [1, 3]])
